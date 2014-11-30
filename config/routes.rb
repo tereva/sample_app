@@ -1,7 +1,9 @@
 SampleApp::Application.routes.draw do
   
-  get "users/new"
+  # Ajout des routes RESTful pour l'objet User (cf p280)
+  resources :users
 
+  # l'index par defaut...
   root to: 'static_pages#home'
 
   match '/signup', to: 'users#new'
