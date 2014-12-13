@@ -26,6 +26,7 @@ require 'spec_helper'
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
   it { should respond_to(:authenticate) }
+  it { should respond_to(:remember_token) }
 
   it { should be_valid }
   
@@ -47,9 +48,7 @@ require 'spec_helper'
     it { should_not == user_for_invalid_password }
     specify { user_for_invalid_password.should be_false }
    end
-
   end
-
 
   describe "when password is not present" do
    before { @user.password = @user.password_confirmation = " " }
@@ -81,7 +80,7 @@ require 'spec_helper'
   describe "when name is more than 50 char" do
    before { @user.name = "a" * 51 }
    it { should_not be_valid }
-  end
+   end
 
   describe "when email format is invalid" do
    it "should be invalid" do
@@ -122,5 +121,9 @@ require 'spec_helper'
    it { should_not be_valid }
   end
 
+  describe "remember token" do
+   before { @user.save }
+   its(:remember_token) { should_not be_blank }
+  end
+ 
 end
-

@@ -1,11 +1,18 @@
 SampleApp::Application.routes.draw do
   
+  
+  # Ajout des routes RESTful pour l'objet User (cf p280)
+  resources :sessions, only: [:new, :create, :destroy]
+
   # Ajout des routes RESTful pour l'objet User (cf p280)
   resources :users
 
-  # l'index par defaut...
+  # alias (ressources) pour acceder aux RESTful routes pour Sessions
+  # cf pages 280, 329
   root to: 'static_pages#home'
 
+  match '/signin', to: 'sessions#new'
+  match '/signout', to: 'sessions#destroy', via: :delete
   match '/signup', to: 'users#new'
   match  '/help', to: 'static_pages#help'
   match '/about', to: 'static_pages#about'
