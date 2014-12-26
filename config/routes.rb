@@ -1,7 +1,7 @@
 SampleApp::Application.routes.draw do
   
   
-  # Ajout des routes RESTful pour l'objet User (cf p280)
+  # Ajout des routes RESTful pour l'objet session (cf p280)
   resources :sessions, only: [:new, :create, :destroy]
 
   # Ajout des routes RESTful pour l'objet User (cf p280)
