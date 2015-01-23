@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 
   before_filter :signed_in_user, only: [:index, :edit, :update]
+#  before_filter :signed_in_user2, only: [:create, :edit, :new]
   before_filter :correct_user, only: [:edit, :update]
   before_filter :admin_user, only: :destroy
 
@@ -32,6 +33,7 @@ class UsersController < ApplicationController
 
   def show
    @user = User.find(params[:id])
+   @microposts = @user.microposts.paginate(page: params[:page])
   end
 
   def create
@@ -46,19 +48,26 @@ class UsersController < ApplicationController
   end
 
   def destroy
-   User.find(params[:id]).destroy
-   flash[:success] = "User destroyed."
-   redirect_to users_path
+  #User.find(params[:id]).destroy
+  #flash[:success] = "User destroyed."
+  #redirect_to users_path
+
+  # tv - exo question 9 page 425  
+  @user=User.find(params[:id])
+  if current_user.admin? && !current_user?(@user) 
+    @user.destroy
+    flash[:success] = "User destroyed."
+    redirect_to users_path
+   end
+  
   end
 
   private
    
-  def signed_in_user
-   unless signed_in?
-     store_location
-     redirect_to signin_path, notice: "Please sign in."
-   end
-  end
+
+ def signed_in_user2
+  redirect_to(root_path) unless current_user.admin?
+ end
 
   def correct_user
    @user = User.find(params[:id])

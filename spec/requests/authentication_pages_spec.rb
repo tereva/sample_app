@@ -11,6 +11,9 @@ describe "Authentication" do
   # Verifie existence de la page signin
   it { should have_selector('h1', text: 'Sign in') }
   it { should have_selector('title', text: 'Sign in') }
+  it { should_not have_link('Settings') }
+  it { should_not have_link('Profile') }
+
 
   describe "with invalid information" do
   
@@ -18,7 +21,6 @@ describe "Authentication" do
   
    # verifie existence page sign in avec erreur
    it { should have_selector('title', text: 'Sign in') }
-   it { should_not have_link('Settings') }
    it { should have_selector('div.alert.alert-error', text: 'Invalid') }
 
    # verifie absence erreur au lien suivant
@@ -61,9 +63,7 @@ describe "Authentication" do
     
      before do
       visit edit_user_path(user)
-      fill_in "Email", with: user.email
-      fill_in "Password", with: user.password
-      click_button "Sign in"
+      sign_in user
      end
 
      describe "after signing in" do
@@ -94,6 +94,24 @@ describe "Authentication" do
       end
 
      end # in the Users controller
+
+     describe "in the Microposts controller" do
+
+
+       describe "submitting to the create action" do
+        before { post microposts_path }
+        specify { response.should redirect_to(signin_path) }
+       end
+
+       describe "submitting to the destroy action" do
+        before do
+         micropost = FactoryGirl.create(:micropost)
+         delete micropost_path(micropost)
+        end
+        specify { response.should redirect_to(signin_path) }
+       end
+
+     end # in the Microposts controller
     end # for non-signed-in users
 
    describe "as wrong user" do

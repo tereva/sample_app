@@ -7,6 +7,9 @@ SampleApp::Application.routes.draw do
   # Ajout des routes RESTful pour l'objet User (cf p280)
   resources :users
 
+  # RESTful ressource micropost
+  resources :microposts, only: [:create, :destroy]
+
   # alias (ressources) pour acceder aux RESTful routes pour Sessions
   # cf pages 280, 329
   root to: 'static_pages#home'
