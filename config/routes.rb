@@ -1,14 +1,17 @@
 SampleApp::Application.routes.draw do
   
   
-  # Ajout des routes RESTful pour l'objet session (cf p280)
+  # Ajout des routes RESTful pour l'objet session (cf p280, 512)
   resources :sessions, only: [:new, :create, :destroy]
-
-  # Ajout des routes RESTful pour l'objet User (cf p280)
-  resources :users
-
-  # RESTful ressource micropost
   resources :microposts, only: [:create, :destroy]
+  resources :relationships, only: [:create, :destroy]
+
+  # Ajout des routes RESTful pour l'objet User (cf p280, 506)
+  resources :users do
+   member do
+    get :following, :followers
+   end
+  end
 
   # alias (ressources) pour acceder aux RESTful routes pour Sessions
   # cf pages 280, 329
